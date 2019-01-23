@@ -6,7 +6,7 @@ public class SBloc : Bloc
     public override void Rotate()
     {
         var rotationAngle = 90 * multiplier;
-        transform.Rotate(new Vector3(0,0,90 * rotationAngle));
+        transform.Rotate(new Vector3(0,0,rotationAngle));
         multiplier *= -1;
     }
 }
