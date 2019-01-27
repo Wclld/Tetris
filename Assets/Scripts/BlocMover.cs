@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class BlocMover : MonoBehaviour // declaring class and inheriting it from MonoBehaviour, so this class can be attached to GameObject
@@ -31,6 +32,7 @@ public class BlocMover : MonoBehaviour // declaring class and inheriting it from
         gameManager.InputManager.OnRightPressed += MoveAside;
         gameManager.InputManager.OnUpPressed += Rotate;
         gameManager.InputManager.OnDownPressed += MoveDown;
+        gameManager.OnBlockStopped += SetBloc;
     }
 
     public void SetBloc() // declaring a public method that can be accessed from other class
@@ -59,7 +61,7 @@ public class BlocMover : MonoBehaviour // declaring class and inheriting it from
             yield return new WaitForSeconds(currentMoveTime); // making this function to wait for declared time
             MoveDown();
             currentMoveTime = DecreaseTime(currentMoveTime); // passing and getting value from local function
-            Debug.Log(currentMoveTime.ToString());
+//            Debug.Log(currentMoveTime.ToString());
         }  
     }
     
@@ -75,12 +77,21 @@ public class BlocMover : MonoBehaviour // declaring class and inheriting it from
     public void Rotate()
     {
         currentBloc?.Rotate(); // checking for object is not null and calling accessible method
+        if(!gameManager.Grid.BlocIsInGrid(currentBloc.transform))
+            currentBloc?.Rotate(true); 
+            
     }
 
     private void Move(Vector3 direction)
     {
-        if(currentBloc != null)
+        if (currentBloc != null)
+        {
             currentBloc.transform.localPosition += direction;
+            if (!gameManager.Grid.BlocIsInGrid(currentBloc.transform))
+                currentBloc.transform.localPosition -= direction;
+            if (gameManager.Grid.IsOnBottom(currentBloc.transform))
+                gameManager.BlocStopped();
+        }
         else
             Debug.LogError("Bloc is not set!"); // logging message th the unity console
     }
@@ -92,7 +103,7 @@ public class BlocMover : MonoBehaviour // declaring class and inheriting it from
             calculatedTime = time;
 
         return calculatedTime; //returning value from function
-    } 
+    }
 
 }
 public enum MoveSide // declaring enumeration 

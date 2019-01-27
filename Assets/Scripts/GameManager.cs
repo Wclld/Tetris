@@ -8,9 +8,12 @@ public class GameManager : MonoBehaviour
 
     public BlocsSpawner BlocSpawner;
     public InputManager InputManager;
+    public Grid Grid;
 
     public event Action OnGamePaused = () => {};
     public event Action OnGameStarted = () => {};
+
+    public event Action OnBlockStopped = () => {};
 
     public bool IsPlaying;
     
@@ -30,5 +33,10 @@ public class GameManager : MonoBehaviour
     void PauseGame()
     {
         OnGamePaused.Invoke();
+    }
+
+   public void BlocStopped()
+    {
+        OnBlockStopped.Invoke();
     }
 }
