@@ -24,6 +24,8 @@
           <e p="Grid.cs" t="Include" />
           <e p="InputManager.cs" t="Include" />
           <e p="Menu.cs" t="Include" />
+          <e p="Score.cs" t="Include" />
+          <e p="SoundManager.cs" t="Include" />
         </e>
         <e p="Scripts.cs" t="Include" />
         <e p="TextMesh Pro" t="Include">

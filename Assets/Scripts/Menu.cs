@@ -24,13 +24,16 @@ public class Menu : MonoBehaviour
     private CanvasGroup mainMenu;
     [SerializeField]
     private CanvasGroup score;
+    [SerializeField]
+    private CanvasGroup inGame;
 
     private CanvasGroup currentCanvas;
     
     private void Start()
     {
         BindButtons();
-        GameManager.Instance.OnGameStarted += BackToMainMenu;
+        GameManager.Instance.OnGameStarted += SwitchInGame;
+        GameManager.Instance.OnGameOver += SwitchInGame;
     }
 
     private void BindButtons()
@@ -42,7 +45,7 @@ public class Menu : MonoBehaviour
 
         for (var i = 0; i < backButtons.Length; i++)
         {
-            backButtons[i].onClick.AddListener(BackToMainMenu);
+            backButtons[i].onClick.AddListener(SwitchMainMenu);
         }
     }
 
@@ -64,8 +67,12 @@ public class Menu : MonoBehaviour
     {
         ChangeGroupState(options);
     }
+    private void SwitchInGame()
+    {
+        ChangeGroupState(inGame);
+    }
 
-    private void BackToMainMenu()
+    private void SwitchMainMenu()
     {
         ChangeGroupState(currentCanvas);
     }

@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public BlocsSpawner BlocSpawner;
     public InputManager InputManager;
     public Grid Grid;
+    public Score Score;
 
     public event Action OnGamePaused = () => { };
     public event Action OnGameStarted = () => { };

@@ -8,13 +8,15 @@ public class BlocMover : MonoBehaviour // declaring class and inheriting it from
     private float blocStartMoveTime = 1.5f; // declaring public field with floating coma, that can be accessed from other class and changed through Unity's editor 
     [SerializeField]
     private float minMoveTime = 0.1f;
+    [SerializeField] 
     private float currentMoveTime; // declaring private value, because this one is not needed in public access
 
     [SerializeField] 
     private float timeDecreasePercent = 0.01f;
     private Bloc currentBloc;
     private Coroutine movingCoroutine;
-    private bool iscurrentBlocNull => currentBloc == null;
+    private Coroutine moveTillDownCoroutine;
+    private bool isCurrentBlocNull => currentBloc == null;
 
     private GameManager gameManager => GameManager.Instance;
 
@@ -31,14 +33,20 @@ public class BlocMover : MonoBehaviour // declaring class and inheriting it from
         gameManager.InputManager.OnLeftPressed += MoveAside;
         gameManager.InputManager.OnRightPressed += MoveAside;
         gameManager.InputManager.OnUpPressed += Rotate;
-        gameManager.InputManager.OnDownPressed += MoveDown;
+        gameManager.InputManager.OnDownPressed += MoveTillBottom;
         gameManager.OnBlockStopped += SetBloc;
+        gameManager.OnBlockStopped += () =>
+        {
+            if(moveTillDownCoroutine != null)
+                StopCoroutine(moveTillDownCoroutine);
+        };
+        gameManager.OnGameOver += StopAllCoroutines;
         gameManager.OnGameOver += StopAllCoroutines;
     }
 
     public void SetBloc() // declaring a public method that can be accessed from other class
     {
-        currentBloc = GameManager.Instance.BlocSpawner.SpawnBlock();
+        currentBloc = GameManager.Instance.BlocSpawner.SpawnBloc();
     }
     public void StartMoving()
     {
@@ -57,12 +65,11 @@ public class BlocMover : MonoBehaviour // declaring class and inheriting it from
     {
         while (true)
         {
-            if (iscurrentBlocNull)
-                SetBloc();
             yield return new WaitForSeconds(currentMoveTime); // making this function to wait for declared time
+            if (isCurrentBlocNull)
+                SetBloc();
             MoveDown();
             currentMoveTime = DecreaseTime(currentMoveTime); // passing and getting value from local function
-//            Debug.Log(currentMoveTime.ToString());
         }  
     }
     
@@ -73,6 +80,20 @@ public class BlocMover : MonoBehaviour // declaring class and inheriting it from
     public void MoveDown()
     {
        Move(Vector3.down);
+    }
+
+    private void MoveTillBottom()
+    {
+        moveTillDownCoroutine = StartCoroutine(MoveTillBottomRoutine());
+    }
+
+    private IEnumerator MoveTillBottomRoutine()
+    {
+        while (true)
+        {
+            MoveDown();
+            yield return null;
+        }
     }
 
     public void Rotate()
@@ -104,6 +125,12 @@ public class BlocMover : MonoBehaviour // declaring class and inheriting it from
             calculatedTime = time;
 
         return calculatedTime; //returning value from function
+    }
+
+    private void FinishGame()
+    {
+        StopAllCoroutines();
+        Destroy(currentBloc.gameObject);
     }
 
 }

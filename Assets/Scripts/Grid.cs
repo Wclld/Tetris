@@ -12,6 +12,7 @@ public class Grid : MonoBehaviour
 
     private void Awake()
     {
+        GameManager.Instance.OnGameOver += ClearBoard;
         bricks = new Transform[height, width];
     }
 
@@ -43,7 +44,6 @@ public class Grid : MonoBehaviour
                 bricks[brickPosition.y -1, brickPosition.x] != null)
             {
                 AddBlocToArray(bloc);
-                Debug.Log(brickPosition);
                 return true;
             }
         }
@@ -52,17 +52,20 @@ public class Grid : MonoBehaviour
 
     private void AddBlocToArray(Transform bloc)
     {
+        GameManager.Instance.Score.AddScore(10);
         for (int i = 0; i < bloc.childCount; i++)
         {
             var brick = Vector3Int.RoundToInt(bloc.GetChild(i).position) - Vector3Int.one;
-            if (brick.y > height)
+            if (brick.y >= height-1)
             {
-                GameManager.Instance.
+                GameManager.Instance.GameOver();
+                return;
             }
             bricks[brick.y, brick.x] = bloc.GetChild(i);
         }
         CheckLines();
     }
+    
 
     private void ShowInfo()
     {
@@ -114,7 +117,7 @@ public class Grid : MonoBehaviour
             Destroy(bricks[line, i].gameObject);
             bricks[line, i] = null;
         }
-        Debug.Log("qwe");
+        GameManager.Instance.Score.AddScore(100);
     }
 
     private void MoveLinesDown(int line)
@@ -129,6 +132,20 @@ public class Grid : MonoBehaviour
                     bricks[i, j].position = pos;
                     bricks[i - 1, j] = bricks[i, j];
                     bricks[i, j] = null;
+                }
+            }
+        }
+    }
+
+    private void ClearBoard()
+    {
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                if (bricks[i, j] != null)
+                {
+                    Destroy(bricks[i,j].parent.gameObject);
                 }
             }
         }
