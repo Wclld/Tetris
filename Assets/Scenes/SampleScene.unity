@@ -3039,9 +3039,9 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 719200377}
   m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!114 &719200380
 MonoBehaviour:
@@ -5840,6 +5840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blocStartMoveTime: 1.5
   minMoveTime: 0.1
+  currentMoveTime: 0
   timeDecreasePercent: 0.01
 --- !u!114 &1479729678
 MonoBehaviour:
@@ -6037,9 +6038,9 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1502373336}
   m_Enabled: 1
-  m_Alpha: 0
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!1 &1510411527
 GameObject:
