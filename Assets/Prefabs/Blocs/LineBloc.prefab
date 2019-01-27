@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 136569644b0a6b742b40d186cac8a140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPos: {x: 6, y: 19, z: 0}
+  spawnPos: {x: 6, y: 18, z: 0}
 --- !u!1001 &6547642588334250820
 PrefabInstance:
   m_ObjectHideFlags: 0

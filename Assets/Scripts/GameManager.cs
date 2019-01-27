@@ -10,13 +10,14 @@ public class GameManager : MonoBehaviour
     public InputManager InputManager;
     public Grid Grid;
 
-    public event Action OnGamePaused = () => {};
-    public event Action OnGameStarted = () => {};
+    public event Action OnGamePaused = () => { };
+    public event Action OnGameStarted = () => { };
 
-    public event Action OnBlockStopped = () => {};
+    public event Action OnBlockStopped = () => { };
+    public event Action OnGameOver = () => { };
 
     public bool IsPlaying;
-    
+
     private void Awake()
     {
         if (Instance == null)
@@ -35,8 +36,14 @@ public class GameManager : MonoBehaviour
         OnGamePaused.Invoke();
     }
 
-   public void BlocStopped()
+    public void BlocStopped()
     {
         OnBlockStopped.Invoke();
     }
+
+    public void GameOver()
+    {
+        OnGameOver.Invoke();
+    }
+
 }

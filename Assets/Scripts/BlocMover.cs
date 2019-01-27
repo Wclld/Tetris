@@ -33,6 +33,7 @@ public class BlocMover : MonoBehaviour // declaring class and inheriting it from
         gameManager.InputManager.OnUpPressed += Rotate;
         gameManager.InputManager.OnDownPressed += MoveDown;
         gameManager.OnBlockStopped += SetBloc;
+        gameManager.OnGameOver += StopAllCoroutines;
     }
 
     public void SetBloc() // declaring a public method that can be accessed from other class
